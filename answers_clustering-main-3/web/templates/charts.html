@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plots.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_style.css') }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Plots</title>
+</head>
+<body>
+<header>
+    <div class="header-box">
+        <span id="header-team-name">ALT+F4 Team</span>
+        <img id="header-ico" src="../static/src/ros_atom.png" alt="the icon of the caseholder"/>
+    </div>
+</header>
+<main>
+    <h1>{{ title }}</h1>
+    <div class="chart-container">
+        <div class="text-viz">
+            <div class="statistic">
+                <h2>Всего кластеров: {{ group_count }}</h2>
+                <h3>Среднее число элементов в кластере: {{ mean_group_count }}</h3>
+                <h3>Максимальный кластер содержит элементов: {{ max_cluster_count }}</h3>
+            </div>
+            <img id="cloud-vector" src='#' />
+        </div>
+
+        <div class="chart scatter-chart">
+            <canvas id="scatterChart"></canvas>
+        </div>
+        <div class="chart stacked-bar-line-chart">
+            <canvas id="stackedBarLineChart"></canvas>
+        </div>
+        <div class="chart polar-area-chart">
+            <canvas id="myChart"></canvas>
+        </div>
+
+    </div>
+    </div>
+    <form action="/download" method="post" class="download-form">
+        <input type="hidden" name="results" value="{{ df }}"/>
+        <button type="submit" class="graphics">Выгрузить в CSV</button>
+    </form>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const title2id = {'Опишите одним словом ваше текущее состояние': 0,
+                      'Напишите свою ассоциацию со словом &#34;бюрократ&#34;': 1,
+                      'Что позволяет вам лично поддерживать уверенность и рабочий настрой?': 2,
+                      'В чём причина стресса, по вашему мнению?': 3,
+                      'Какой лидер актуален сегодня для вас?': 4,
+                      'Вопрос 5. В чем, по Вашему мнению, причина роста травматизма?': 5
+    }
+    const title = '{{ title }}'
+    console.log(title2id, title)
+    const path_to_cloud = "../static/src/clouds/" + title2id[title] + ".jpg"
+    console.log(path_to_cloud)
+    document.getElementById("cloud-vector").src = path_to_cloud
+
+    // Polar Area Chart
+     const polarAreaChartData = {
+       labels: JSON.parse('{{ labels | tojson }}'),
+       datasets: [
+         {
+           label: 'results',
+           data: JSON.parse('{{ data | tojson }}'),
+           backgroundColor: [
+             'rgba(255, 99, 132, 0.7)',
+             'rgba(54, 162, 235, 0.7)',
+             'rgba(75, 192, 192, 0.7)',
+           ],
+           hoverBackgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(75, 192, 192)'],
+           hoverOffset: 4,
+         },
+       ],
+     };
+
+     const ctx = document.getElementById('myChart').getContext('2d');
+
+     const config = {
+         type: 'doughnut',
+
+       data: polarAreaChartData,
+       options: {
+         responsive: true,
+       },
+     };
+     new Chart(ctx, config);
+     function getRandomColor() {
+         const letters = '0123456789ABCDEF';
+         let color = '#';
+         for (let i = 0; i < 6; i++) {
+             color += letters[Math.floor(Math.random() * 16)];
+         }
+         return color;
+     }
+     // Scatter Chart
+     const scatterChartData = {
+         datasets: [
+                 {% for dataset in datasets %}
+                   {
+                     label: '{{ dataset.label }}',
+                     data: {{ dataset.data | tojson }},
+ //                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                     backgroundColor: getRandomColor(),
+                   },
+                 {% endfor %}
+
+               ],
+     };
+
+     const scatterCtx = document.getElementById('scatterChart').getContext('2d');
+
+     const scatterConfig = {
+ //        type: 'scatter',
+       type: 'bubble',
+       data: scatterChartData,
+       options: {
+           responsive: true,
+           plugins: {
+               legend: {
+                   display: false // Скрыть легенду
+                 },
+           tooltip:{
+                   callbacks:{
+                       label:(context)=>{
+                           return `${context.dataset.label}: ${context.raw.text}`;
+                       }
+                   }
+               }
+           }
+       },
+   };
+
+     new Chart(scatterCtx, scatterConfig);
+
+ //    // Center the scatter chart
+ //    const chartContainer = document.getElementsByClassName('chart-container')[0];
+ //    const scatterChartContainer = document.getElementsByClassName('scatter-chart')[0];
+ //    scatterChartContainer.style.margin = '0 auto';
+     // Stacked Bar/Line Chart
+     const stackedBarLineChartData = {
+         labels: {{ cluster_name | tojson }},
+         datasets: [
+             {
+                 label: 'Num elements',
+                 data: {{ cluster_count | tojson }},
+                 backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                 borderColor: 'rgb(255, 99, 132)',
+                 borderWidth: 1,
+                 type: 'bar',
+                 order: 1,
+             },
+             {
+                 label: 'Neutrals',
+                 data: {{ positive | tojson }},
+                 backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                 borderColor: 'rgb(54, 162, 235)',
+                 borderWidth: 1,
+                 order: 0,
+             },
+         ],
+     };
+
+ const stackedBarLineCtx = document.getElementById('stackedBarLineChart').getContext('2d');
+
+ const stackedBarLineConfig = {
+     type: 'line',
+     data: stackedBarLineChartData,
+     options: {
+         plugins: {
+             title: {
+                 display: true,
+                 text: 'Count clast and neutrals'
+             }
+         },
+     },
+ };
+
+new Chart(stackedBarLineCtx, stackedBarLineConfig);
+</script>
+</body>
+</html>

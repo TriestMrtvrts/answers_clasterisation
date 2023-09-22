@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Результаты предварительного просмотра</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='result_style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale = 1">
+</head>
+<body>
+<header>
+    <div class="header-box">
+        <span id="header-team-name">ALT+F4 Team</span>
+        <img id="header-ico" src="../static/src/ros_atom.png" alt="the icon of the caseholder"/>
+    </div>
+</header>
+<main>
+    {% if loading %}
+    <div id="loading-icon">
+        <img src="{{ url_for('static', filename='loading.gif') }}" alt="Loading">
+    </div>
+    {% endif %}
+    <div class="result-buttons">
+        <form action="/visualization" method="post" class="visualisation-form">
+            <input name="graphics" value="{{ df }}" hidden="hidden">
+            <button class="graphics" type="submit">Визуализация</button>
+        </form>
+        <form action="/download" method="post" class="download-form">
+            <input type="hidden" name="results" value="{{ df }}">
+            <button type="submit" class="graphics">Выгрузить в CSV</button>
+        </form>
+    </div>
+    <span class="page-title">Предпросмотр результатов</span>
+    <div class="results-box">
+        {% for group in preview %}
+        <div class="group_block">
+            <h2 class="group_title">Группа: {{ group[0] }}</h2>
+            {% for text in group[1:] %}
+            <span>{{ text }}</span><br>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+</main>
+</body>
+</html>
+
+

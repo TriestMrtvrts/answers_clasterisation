@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processing Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index_style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='common_style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            width: 100vw;
+            margin: 0;
+            background-color: #E2E7EB;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .header-box {
+            display: flex;
+            padding: 20px;
+            align-items: center;
+        }
+
+        #header-team-name {
+            width: fit-content;
+            height: fit-content;
+            font-size: 40px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-right: 72px;
+        }
+
+        #header-ico {
+            width: 250px;
+            height: 50px;
+        }
+
+        @media (max-width: 480px) {
+            .header-box {
+                flex-direction: column;
+            }
+
+            #header-team-name {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        .loading-container {
+            position: absolute; /* Position the container absolutely within the body */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Style the loading GIF */
+        .loading-gif {
+            width: 35px;
+            height: 35px;
+            cursor: wait;
+        }
+
+        /* Additional styles for the message */
+        div#message {
+            text-align: center;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        div#message p {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing background content goes here -->
+
+    <!-- Loading container with GIF -->
+    <div class="loading-container">
+        <img class="loading-gif" src="{{ url_for('static', filename='loading.gif') }}" alt="Loading">
+    </div>
+
+    <div id="message">
+        <p>Обработка данных. Пожалуйста, подождите...</p>
+    </div>
+
+    <script type="text/javascript">
+        setTimeout(function() {
+         window.location.href = "{{ url_for('visualization', selected_question=selected_question) }}";
+        });
+    </script>
+</body>
+</html>
+

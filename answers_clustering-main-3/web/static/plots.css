@@ -1,0 +1,76 @@
+main {
+    margin: 0 auto;
+    max-width: 1500px;
+    text-align: center;
+}
+
+.chart-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.download-form{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+img {
+    width: 20rem;
+}
+
+
+.download-form button {
+    border-radius: 10px;
+    border: none;
+    width: 20vw;
+    margin: 50px auto;
+    background: #4C38F2;
+    padding: 17px 40px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.statistic {
+    margin: 5% 10px;
+    text-align: left;
+}
+
+.polar-area-chart {
+    width: 30vw;
+    display: flex;
+    justify-content: center;
+}
+
+.text-viz {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+@media (max-width: 1000px) {
+    .chart-container {
+        grid-template-columns: 1fr;
+    }
+    .chart {
+        margin: 0 auto;
+    }
+    .download-form button {
+        font-size: 15px;
+        width: 250px;
+    }
+}
+
+@media (max-width: 600px) {
+    .chart-container {
+        grid-template-columns: 1fr;
+    }
+    .chart {
+        width: 100vw;
+    }
+
+    .download-form button {
+        font-size: 15px;
+        width: 250px;
+    }
+}

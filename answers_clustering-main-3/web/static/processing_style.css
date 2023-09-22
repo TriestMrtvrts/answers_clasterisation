@@ -1,0 +1,73 @@
+
+main {
+    margin: 0 auto;
+}
+
+.upload-form-box {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    width: calc(100% - 40px);
+    margin: 20px;
+}
+
+.page-name {
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 20px;
+}
+
+.page-description {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1px;
+    margin-bottom: 50px;
+}
+
+.upload-form{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.upload-form label {
+    border-radius: 10px;
+    background: #F5F5F5;
+    padding: 17px 0;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 550;
+    line-height: normal;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.upload-form input[name="file"]{
+    display: none;
+}
+
+.upload-form button {
+    border-radius: 10px;
+    border: none;
+    background: #4C38F2;
+    width: 100%;
+    padding: 17px 40px;;
+    font-size: 20px;
+    color: white;
+    font-style: normal;
+    font-weight: 550;
+    line-height: normal;
+    cursor: pointer;
+    display: flex;
+}
+.loading {
+    width: 35px;
+    height: 35px;
+    display: none;
+    background: url(/static/loadingimage.gif) no-repeat;
+    cursor: wait;
+    }

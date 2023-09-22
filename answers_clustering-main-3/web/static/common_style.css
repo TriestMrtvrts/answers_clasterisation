@@ -1,0 +1,64 @@
+@font-face{
+    font-family: "lineyka";
+    src: url("fonts/ofont.ru_Lineyka.ttf");
+}
+
+* {
+    font-family: "lineyka";
+    color: rgb(45, 45, 45);
+}
+
+body {
+    width: 100vw;
+    margin: 0;
+}
+
+header{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.header-box {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+}
+
+#header-team-name {
+    width: fit-content;
+    height: fit-content;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-right: 72px;
+}
+
+#header-ico {
+    width: 250px;
+    height: 50px;
+}
+
+body {
+    background-color: #E2E7EB;
+}
+
+@media (max-width: 480px) {
+    .header-box {
+        flex-direction: column;
+    }
+    #header-team-name{
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}
+<style>
+    div#loading {
+        width: 35px;
+        height: 35px;
+        display: none;
+        background: url(/static/src/loading.gif) no-repeat;
+        cursor: wait;
+    }
+</style>
